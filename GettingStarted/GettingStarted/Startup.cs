@@ -51,6 +51,7 @@ namespace GettingStarted
                 endpoints.MapControllers();
             });
 
+            // graphql initialization:
             app.UseGraphQL();
             app.UsePlayground();
         }
