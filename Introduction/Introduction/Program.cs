@@ -15,6 +15,7 @@ namespace Introduction
             SchemaFirstRun.RunWithResolver();
             SchemaFirstRun.RunWithBindComplexType();
             SchemaFirstRun.RunWithBindComplexTypeSpecifyField();
+            SchemaFirstRun.RunWithBindComplexTypeQueryResolver();
 
             Console.ReadKey();
         }

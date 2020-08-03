@@ -75,5 +75,26 @@ namespace Introduction.SchemaFirst
 
             Console.WriteLine(executor.Execute("{ myHello }").ToJson() + Environment.NewLine);
         }
+
+        public static void RunWithBindComplexTypeQueryResolver()
+        {
+            Console.WriteLine("---SchemaFirstRun:RunWithBindComplexTypeQueryResolver---");
+
+            var schema = SchemaBuilder.New()
+                .AddDocumentFromString(
+                    @"
+                    type Query {
+                        hello: String
+                        greetings: String
+                    }")
+                .BindComplexType<Query>()
+                .BindResolver<QueryResolvers>(c => c.To<Query>())
+                .Create();
+
+            var executor = schema.MakeExecutable();
+
+            Console.WriteLine(executor.Execute("{ hello }").ToJson());
+            Console.WriteLine(executor.Execute("{ greetings }").ToJson() + Environment.NewLine);
+        }
     }
 }
