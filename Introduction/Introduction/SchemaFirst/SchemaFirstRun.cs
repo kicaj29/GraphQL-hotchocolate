@@ -80,6 +80,8 @@ namespace Introduction.SchemaFirst
         {
             Console.WriteLine("---SchemaFirstRun:RunWithBindComplexTypeQueryResolver---");
 
+            // using BindResolver we can create wrapper for selected methods from the bussines object
+
             var schema = SchemaBuilder.New()
                 .AddDocumentFromString(
                     @"
@@ -90,6 +92,7 @@ namespace Introduction.SchemaFirst
                 .BindComplexType<Query>()
                 .BindResolver<QueryResolvers>(c => c.To<Query>())
                 .Create();
+
 
             var executor = schema.MakeExecutable();
 
