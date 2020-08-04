@@ -210,10 +210,10 @@ Use attribute in C# ```[UsePaging(SchemaType = typeof(AuthorType))]```
 {
 	authors (before: "Mg==", last: 2) {
         totalCount
-      	nodes {
-    		id
+        nodes {
+            id
             name
-        	surname 
+            surname 
         }
     }
 }
