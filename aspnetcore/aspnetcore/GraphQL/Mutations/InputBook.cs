@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace aspnetcore.GraphQL
+namespace aspnetcore.GraphQL.Mutations
 {
     public class CreateBookInput
     {

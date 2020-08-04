@@ -1,4 +1,5 @@
 ﻿using aspnetcore.GraphQL;
+using aspnetcore.GraphQL.Mutations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

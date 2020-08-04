@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using aspnetcore.Adapters;
 using aspnetcore.Core;
 using aspnetcore.GraphQL;
+using aspnetcore.GraphQL.Filters;
+using aspnetcore.GraphQL.Mutations;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -24,11 +26,13 @@ namespace aspnetcore
 
             services.AddSingleton<IAuthorService, InMemoryAuthorService>();
             services.AddSingleton<IBookService, InMemoryBookService>();
+            services.AddErrorFilter<BookNotFoundExceptionFilter>();
 
             services.AddGraphQL(s => SchemaBuilder.New()
                         .AddServices(s)
                         .AddType<AuthorType>()
                         .AddQueryType<Query>()
+                        .AddMutationType<Mutation>()
                         .Create()
                     );
 

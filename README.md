@@ -459,6 +459,88 @@ To create relations first create [resolver](./aspnetcore/aspnetcore/GraphQL/Book
 </p>
 </details>
 
+## mutations
+
+First create [mutation](./aspnetcore/aspnetcore/GraphQL/Mutations/Mutation.cs) and next [register](./aspnetcore/aspnetcore/Startup.cs) it.
+
+<details>
+<summary>create book - request</summary>
+<p>
+
+```js
+mutation {
+    createBook(inputBook: {
+        title: "my super book",
+        authorId: 1,
+        price: 12.5
+        })
+    {
+        id
+        title
+    }
+}
+```
+
+</p>
+</details>
+
+<details>
+<summary>create book - response</summary>
+<p>
+
+```json
+{
+  "data": {
+    "createBook": {
+      "id": "5",
+      "title": "my super book"
+    }
+  }
+}
+```
+
+</p>
+</details>
+
+<details>
+<summary>delete book - request</summary>
+<p>
+
+
+```js
+mutation {
+    deleteBook(inputBook: {
+        id: 5
+    })
+    {
+        id
+        title
+    }
+}
+```
+
+</p>
+</details>
+
+<details>
+<summary>delete book - response</summary>
+<p>
+
+
+```json
+{
+  "data": {
+    "deleteBook": {
+      "id": "5",
+      "title": "my super book"
+    }
+  }
+}
+```
+
+</p>
+</details>
+
 # links
 https://hotchocolate.io/docs/tutorial-mongo   
 https://hotchocolate.io/docs/aspnet
