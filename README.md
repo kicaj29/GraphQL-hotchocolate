@@ -366,6 +366,97 @@ First is executed filtering and next paging
 </p>
 </details>
 
+## children nodes (relations)
+
+To create relations first create [resolver](./aspnetcore/aspnetcore/GraphQL/BookResolver.cs) and next use it in [object type](./aspnetcore/aspnetcore/GraphQL/AuthorType%20.cs) class.
+
+
+<details>
+<summary>authors with their books - request</summary>
+<p>
+
+```js
+{
+    authors {
+        totalCount
+        nodes {
+            id
+            name
+            surname
+            authorBooks {
+                title
+                price
+            }
+        }
+    }
+}
+```
+
+</p>
+</details>
+
+<details>
+<summary>authors with their books - response</summary>
+<p>
+
+```json
+{
+  "data": {
+    "authors": {
+      "totalCount": 4,
+      "nodes": [
+        {
+          "id": "1",
+          "name": "Fabio",
+          "surname": "Rossi",
+          "authorBooks": [
+            {
+              "title": "First Book",
+              "price": 10
+            },
+            {
+              "title": "Fourth Book",
+              "price": 15
+            }
+          ]
+        },
+        {
+          "id": "2",
+          "name": "Paolo",
+          "surname": "Verdi",
+          "authorBooks": [
+            {
+              "title": "Second Book",
+              "price": 11
+            }
+          ]
+        },
+        {
+          "id": "3",
+          "name": "Carlo",
+          "surname": "Bianchi",
+          "authorBooks": [
+            {
+              "title": "Third Book",
+              "price": 12
+            }
+          ]
+        },
+        {
+          "id": "4",
+          "name": "Adam",
+          "surname": "Bonec",
+          "authorBooks": []
+        }
+      ]
+    }
+  }
+}
+```
+
+</p>
+</details>
+
 # links
 https://hotchocolate.io/docs/tutorial-mongo   
 https://hotchocolate.io/docs/aspnet

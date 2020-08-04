@@ -14,6 +14,7 @@ namespace aspnetcore.GraphQL
             descriptor.Field(b => b.Id).Type<IdType>();
             descriptor.Field(b => b.Title).Type<StringType>();
             descriptor.Field(b => b.Price).Type<DecimalType>();
+            descriptor.Field<AuthorResolver>(t => t.GetAuthor(default, default));
         }
     }
 }
