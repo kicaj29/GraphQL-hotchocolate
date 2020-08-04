@@ -257,12 +257,12 @@ Use attribute in C# ```[UsePaging(SchemaType = typeof(AuthorType))]```
 
 ```js
 {
-	  authors (after: "MQ==", first: 2) {
-    	totalCount
-      	nodes {
-    	    id
+    authors (after: "MQ==", first: 2) {
+        totalCount
+        nodes {
+            id
             name
-        	surname 
+            surname 
         }
     }
 }
