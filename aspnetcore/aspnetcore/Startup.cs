@@ -37,15 +37,19 @@ namespace aspnetcore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // if path is specified then playground UI crashes
+            // PathString graphQLPath = new PathString("/Foo/Bar");
+            // app.UseGraphQL(new QueryMiddlewareOptions { Path = graphQLPath, EnableSubscriptions = false });
+            app.UseGraphQL();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //app.UsePlayground(graphQLPath);
                 app.UsePlayground();
             }
-
-            // if path is specified then playground UI crashes
-            //  app.UseGraphQL("/api");
-            app.UseGraphQL();
+          
+            
 
             /*app.UseRouting();
 

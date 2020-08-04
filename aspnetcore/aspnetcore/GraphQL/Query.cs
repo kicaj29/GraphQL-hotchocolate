@@ -14,6 +14,7 @@ namespace aspnetcore.GraphQL
         {
             _authorService = authorService;
         }
+
         [UsePaging(SchemaType = typeof(AuthorType))]
         public IQueryable<Author> Authors => _authorService.GetAll();
     }

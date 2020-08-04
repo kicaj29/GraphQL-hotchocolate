@@ -16,7 +16,8 @@ namespace aspnetcore.Adapters
             {
                 new Author() { Id = 1, Name = "Fabio", Surname = "Rossi"},
                 new Author() { Id = 2, Name = "Paolo", Surname = "Verdi"},
-                new Author() { Id = 3, Name = "Carlo", Surname = "Bianchi"}
+                new Author() { Id = 3, Name = "Carlo", Surname = "Bianchi"},
+                new Author() { Id = 4, Name = "Adam", Surname = "Bonec"}
             };
         }
 

@@ -45,19 +45,260 @@ dotnet new graphql
 
 example based on this [article](https://www.blexin.com/en-US/Article/Blog/Creating-our-API-with-GraphQL-and-Hot-Chocolate-79)
 
+To run open: http://localhost:37926/playground/   
 
-To get authors
+
+## get authors
 ```
 {
 	  authors {
-        nodes {
+        id
+        name
+        surname
+    }
+}
+```
+
+```
+{
+  "data": {
+    "authors": [
+      {
+        "id": "1",
+        "name": "Fabio",
+        "surname": "Rossi"
+      },
+      {
+        "id": "2",
+        "name": "Paolo",
+        "surname": "Verdi"
+      },
+      {
+        "id": "3",
+        "name": "Carlo",
+        "surname": "Bianchi"
+      }
+    ]
+  }
+}
+```
+
+## get authors with pagination
+
+Use attribute in C# ```[UsePaging(SchemaType = typeof(AuthorType))]```
+
+<details>
+<summary>get all authors - request</summary>
+<p>
+
+```js
+{
+	  authors {
+    	pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+        }
+        edges {
+            cursor
+            node {
+                id
+                name
+                surname
+            }
+        }
+        totalCount
+      	nodes {
             id
             name
-            surname
+        	surname 
         }
     }
 }
 ```
+
+</p>
+</details> 
+
+
+<details>
+<summary>get all authors - response</summary>
+<p>
+
+```json
+{
+  "data": {
+    "authors": {
+      "pageInfo": {
+        "endCursor": "Mw==",
+        "hasNextPage": false,
+        "hasPreviousPage": false,
+        "startCursor": "MA=="
+      },
+      "edges": [
+        {
+          "cursor": "MA==",
+          "node": {
+            "id": "1",
+            "name": "Fabio",
+            "surname": "Rossi"
+          }
+        },
+        {
+          "cursor": "MQ==",
+          "node": {
+            "id": "2",
+            "name": "Paolo",
+            "surname": "Verdi"
+          }
+        },
+        {
+          "cursor": "Mg==",
+          "node": {
+            "id": "3",
+            "name": "Carlo",
+            "surname": "Bianchi"
+          }
+        },
+        {
+          "cursor": "Mw==",
+          "node": {
+            "id": "4",
+            "name": "Adam",
+            "surname": "Bonec"
+          }
+        }
+      ],
+      "totalCount": 4,
+      "nodes": [
+        {
+          "id": "1",
+          "name": "Fabio",
+          "surname": "Rossi"
+        },
+        {
+          "id": "2",
+          "name": "Paolo",
+          "surname": "Verdi"
+        },
+        {
+          "id": "3",
+          "name": "Carlo",
+          "surname": "Bianchi"
+        },
+        {
+          "id": "4",
+          "name": "Adam",
+          "surname": "Bonec"
+        }
+      ]
+    }
+  }
+}
+```
+
+</p>
+</details>
+
+
+<details>
+<summary>get last 2 authors before Carlo Bianchi - request</summary>
+<p>
+
+```js
+{
+	  authors (before: "Mg==", last: 2) {
+    	totalCount
+      	nodes {
+    		id
+            name
+        	surname 
+        }
+    }
+}
+```
+
+</p>
+</details>
+
+<details>
+<summary>get last 2 authors before Carlo Bianchi - response</summary>
+<p>
+
+```json
+{
+  "data": {
+    "authors": {
+      "totalCount": 4,
+      "nodes": [
+        {
+          "id": "1",
+          "name": "Fabio",
+          "surname": "Rossi"
+        },
+        {
+          "id": "2",
+          "name": "Paolo",
+          "surname": "Verdi"
+        }
+      ]
+    }
+  }
+}
+```
+
+</p>
+</details>
+
+<details>
+<summary>get first 2 authors after Paolo Verdi - request</summary>
+<p>
+
+```js
+{
+	  authors (after: "MQ==", first: 2) {
+    	totalCount
+      	nodes {
+    	    id
+            name
+        	surname 
+        }
+    }
+}
+```
+
+</p>
+</details>
+
+<details>
+<summary>get first 2 authors after Paolo Verdi - response</summary>
+<p>
+
+```json
+{
+  "data": {
+    "authors": {
+      "totalCount": 4,
+      "nodes": [
+        {
+          "id": "3",
+          "name": "Carlo",
+          "surname": "Bianchi"
+        },
+        {
+          "id": "4",
+          "name": "Adam",
+          "surname": "Bonec"
+        }
+      ]
+    }
+  }
+}
+```
+
+</p>
+</details>
 
 # links
 https://hotchocolate.io/docs/tutorial-mongo   
