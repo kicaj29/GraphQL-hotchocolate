@@ -1,0 +1,1 @@
+﻿{"data":{"createBook":{"price":50,"title":"Test book","authorId":4}}}

@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnetcore", "aspnetcore\aspnetcore.csproj", "{55F16838-E43E-4A49-8F53-86EA1FFACBA4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aspnetcore.tests", "aspnetcore.tests\aspnetcore.tests.csproj", "{B4ABF1CA-40E5-4FA8-B543-D77932C350C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{55F16838-E43E-4A49-8F53-86EA1FFACBA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55F16838-E43E-4A49-8F53-86EA1FFACBA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55F16838-E43E-4A49-8F53-86EA1FFACBA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4ABF1CA-40E5-4FA8-B543-D77932C350C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4ABF1CA-40E5-4FA8-B543-D77932C350C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4ABF1CA-40E5-4FA8-B543-D77932C350C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4ABF1CA-40E5-4FA8-B543-D77932C350C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

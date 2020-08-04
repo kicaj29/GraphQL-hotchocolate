@@ -9,6 +9,9 @@
   - [get authors with filtering](#get-authors-with-filtering)
   - [children nodes (relations)](#children-nodes-relations)
   - [mutations](#mutations)
+  - [tests](#tests)
+    - [book query test](#book-query-test)
+    - [book mutation test](#book-mutation-test)
 - [links](#links)
 
 # GettingStarted (asp.net core)
@@ -57,6 +60,8 @@ dotnet new graphql
 # asp.net core example
 
 example based on this [article](https://www.blexin.com/en-US/Article/Blog/Creating-our-API-with-GraphQL-and-Hot-Chocolate-79)
+
+[unit tests](https://www.blexin.com/en-US/Article/Blog/Testing-our-API-with-GraphQL-and-Hot-Chocolate-89)   
 
 To run open: http://localhost:37926/playground/   
 
@@ -553,6 +558,28 @@ mutation {
 
 </p>
 </details>
+
+## tests
+
+### book query test
+
+In tests is used nuget [ApprovalTests](https://github.com/approvals/ApprovalTests.Net). First we have to run the test: it will fail but will generate a file ```BookQueryTest.Test.received.txt```. If file content is correct change the file name to ```BookQueryTest.Test.approved.txt``` and run the test again: this time ```Approvals.Verify(resultJson);``` will compare received data with the file content. If it will be the same the test will pass.
+
+![BookQueryTest.Test.received.txt](./images/ApprovalTestFileGeneration.png)
+
+### book mutation test
+
+If needed in mutation we can use params to pass the values from C# to the actual payload.
+
+```
+mutation($title: String, $price: Decimal!, $authorId: Int!)
+```
+
+```c#
+                                                .AddVariableValue("title", "Test book")
+                                                .AddVariableValue("authorId", 4)
+                                                .AddVariableValue("price", 50.0)
+```
 
 # links
 https://hotchocolate.io/docs/tutorial-mongo   

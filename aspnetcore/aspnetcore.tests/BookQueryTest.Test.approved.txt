@@ -1,0 +1,1 @@
+﻿{"data":{"books":{"nodes":[{"id":"1","title":"First Book","price":10},{"id":"2","title":"Second Book","price":11},{"id":"3","title":"Third Book","price":12},{"id":"4","title":"Fourth Book","price":15}]}}}
