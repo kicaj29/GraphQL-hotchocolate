@@ -576,9 +576,9 @@ mutation($title: String, $price: Decimal!, $authorId: Int!)
 ```
 
 ```c#
-                                                .AddVariableValue("title", "Test book")
-                                                .AddVariableValue("authorId", 4)
-                                                .AddVariableValue("price", 50.0)
+.AddVariableValue("title", "Test book")
+.AddVariableValue("authorId", 4)
+.AddVariableValue("price", 50.0)
 ```
 
 # links
