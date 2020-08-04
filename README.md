@@ -1,3 +1,16 @@
+- [GettingStarted (asp.net core)](#gettingstarted-aspnet-core)
+- [Introduction](#introduction)
+- [Code-first approach](#code-first-approach)
+- [Schema-first](#schema-first)
+- [From template](#from-template)
+- [asp.net core example](#aspnet-core-example)
+  - [get authors](#get-authors)
+  - [get authors with pagination](#get-authors-with-pagination)
+  - [get authors with filtering](#get-authors-with-filtering)
+  - [children nodes (relations)](#children-nodes-relations)
+  - [mutations](#mutations)
+- [links](#links)
+
 # GettingStarted (asp.net core)
 Example based on https://hotchocolate.io/docs/tutorial-01-gettingstarted   
 
