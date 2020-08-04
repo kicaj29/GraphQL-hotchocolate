@@ -208,8 +208,8 @@ Use attribute in C# ```[UsePaging(SchemaType = typeof(AuthorType))]```
 
 ```js
 {
-	  authors (before: "Mg==", last: 2) {
-    	totalCount
+	authors (before: "Mg==", last: 2) {
+        totalCount
       	nodes {
     		id
             name
