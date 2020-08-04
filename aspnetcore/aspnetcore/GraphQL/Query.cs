@@ -1,5 +1,6 @@
 ﻿using aspnetcore.Core;
 using HotChocolate.Types.Relay;
+using HotChocolate.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace aspnetcore.GraphQL
         }
 
         [UsePaging(SchemaType = typeof(AuthorType))]
+        [UseFiltering]
         public IQueryable<Author> Authors => _authorService.GetAll();
     }
 }

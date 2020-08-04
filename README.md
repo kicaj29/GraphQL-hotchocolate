@@ -119,7 +119,7 @@ Use attribute in C# ```[UsePaging(SchemaType = typeof(AuthorType))]```
 ```
 
 </p>
-</details> 
+</details>
 
 
 <details>
@@ -290,6 +290,72 @@ Use attribute in C# ```[UsePaging(SchemaType = typeof(AuthorType))]```
           "id": "4",
           "name": "Adam",
           "surname": "Bonec"
+        }
+      ]
+    }
+  }
+}
+```
+
+</p>
+</details>
+
+## get authors with filtering
+
+Use attribute in C# ```[UseFiltering]```
+
+<details>
+<summary>filters authors - request</summary>
+<p>
+
+```js
+{
+    authors (
+    where: { OR: [{name_contains: "arl"}, {surname_contains: "one"}]}
+    first: 1
+    )
+    {
+        pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+        }
+        totalCount
+        nodes {
+            id
+            name
+            surname 
+        }
+    }
+}
+```
+
+</p>
+</details>
+
+<details>
+<summary>filters authors - response</summary>
+<p>
+
+First is executed filtering and next paging
+
+```json
+{
+  "data": {
+    "authors": {
+      "pageInfo": {
+        "endCursor": "MA==",
+        "hasNextPage": true,
+        "hasPreviousPage": false,
+        "startCursor": "MA=="
+      },
+      "totalCount": 2,
+      "nodes": [
+        {
+          "id": "3",
+          "name": "Carlo",
+          "surname": "Bianchi"
         }
       ]
     }
