@@ -375,6 +375,8 @@ To create relations first create [resolver](./aspnetcore/aspnetcore/GraphQL/Book
 <summary>authors with their books - request</summary>
 <p>
 
+>NOTE: name of children collection ```authorBooks``` is the same as second part of the method name from the resolver ```GetAuthorBooks```.
+
 ```js
 {
     authors {
