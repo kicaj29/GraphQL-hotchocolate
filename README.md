@@ -51,7 +51,7 @@ To run open: http://localhost:37926/playground/
 ## get authors
 ```
 {
-	  authors {
+    authors {
         id
         name
         surname
@@ -93,7 +93,7 @@ Use attribute in C# ```[UsePaging(SchemaType = typeof(AuthorType))]```
 
 ```js
 {
-	  authors {
+	authors {
     	pageInfo {
             endCursor
             hasNextPage
