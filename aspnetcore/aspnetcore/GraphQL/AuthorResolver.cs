@@ -1,4 +1,5 @@
 ﻿using aspnetcore.Core;
+using aspnetcore.GraphQL.DataLoaders.ClassDataLoaders;
 using HotChocolate;
 using HotChocolate.Resolvers;
 using System;

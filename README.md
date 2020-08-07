@@ -9,6 +9,7 @@
   - [get authors with filtering](#get-authors-with-filtering)
   - [children nodes (relations)](#children-nodes-relations)
   - [mutations](#mutations)
+  - [data loaders](#data-loaders)
   - [tests](#tests)
     - [book query test](#book-query-test)
     - [book mutation test](#book-mutation-test)
@@ -559,6 +560,70 @@ mutation {
 </p>
 </details>
 
+## data loaders
+
+Although we send one request to graphql server usually it will create multiple round-trips to data sources (usually DB). To solve this problem use [data loaders](https://hotchocolate.io/docs/dataloaders). They also solve [N+1 query problem](https://secure.phabricator.com/book/phabcontrib/article/n_plus_one/).
+
+request
+```
+{
+  a1: authorById(id:1)
+  {
+    id
+    name
+    surname
+    authorBooks {
+      title
+      price
+    }
+  }
+  a2: authorById(id: 2)
+  {
+    id
+    name
+    surname
+    authorBooks {
+      title
+      price
+    }
+  }
+}
+```
+
+response
+```
+{
+  "data": {
+    "a1": {
+      "id": "1",
+      "name": "Fabio",
+      "surname": "Rossi",
+      "authorBooks": [
+        {
+          "title": "First Book",
+          "price": 10
+        },
+        {
+          "title": "Fourth Book",
+          "price": 15
+        }
+      ]
+    },
+    "a2": {
+      "id": "2",
+      "name": "Paolo",
+      "surname": "Verdi",
+      "authorBooks": [
+        {
+          "title": "Second Book",
+          "price": 11
+        }
+      ]
+    }
+  }
+}
+```
+
 ## tests
 
 ### book query test
@@ -584,3 +649,7 @@ mutation($title: String, $price: Decimal!, $authorId: Int!)
 # links
 https://hotchocolate.io/docs/tutorial-mongo   
 https://hotchocolate.io/docs/aspnet
+https://medium.com/@__xuorig__/the-graphql-dataloader-pattern-visualized-3064a00f319f   
+https://secure.phabricator.com/book/phabcontrib/article/n_plus_one/   
+https://dev.to/michaelstaib/get-started-with-hot-chocolate-and-entity-framework-e9i   
+https://corstianboerman.com/posts/2019-02-12/generic-data-loaders-for-entity-framework-in-graphql.html  

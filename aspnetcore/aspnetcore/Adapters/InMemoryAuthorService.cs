@@ -25,5 +25,15 @@ namespace aspnetcore.Adapters
         {
             return _authors.AsQueryable();
         }
+
+        public Author GetById(int id)
+        {
+            return _authors.FirstOrDefault(a => a.Id == id);
+        }
+
+        public List<Author> GetByIds(List<int> ids)
+        {
+            return _authors.Where(a => ids.Contains(a.Id)).ToList();
+        }
     }
 }

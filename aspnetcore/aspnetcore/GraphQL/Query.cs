@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using aspnetcore.GraphQL.DataLoaders.ClassDataLoaders;
+using System.Threading;
 
 namespace aspnetcore.GraphQL
 {
@@ -26,5 +28,15 @@ namespace aspnetcore.GraphQL
         [UsePaging(SchemaType = typeof(BookType))]
         [UseFiltering]
         public IQueryable<Book> Books => _bookService.GetAll();
+
+        public Author Author(int id)
+        {
+            return _authorService.GetById(id);
+        }
+
+        public Task<Author> GetAuthorByIdAsync(
+                int id,
+                AuthorDataLoader dataLoader,
+                CancellationToken cancellationToken) => dataLoader.LoadAsync(id, cancellationToken);
     }
 }

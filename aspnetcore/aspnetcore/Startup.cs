@@ -23,14 +23,13 @@ namespace aspnetcore
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDataLoaderRegistry();
             services.AddSingleton<IAuthorService, InMemoryAuthorService>();
             services.AddSingleton<IBookService, InMemoryBookService>();
             services.AddErrorFilter<BookNotFoundExceptionFilter>();
-
+            
             services.AddGraphQL(s => SchemaBuilder.New()
                         .AddServices(s)
-                        .AddType<AuthorType>()
                         .AddQueryType<Query>()
                         .AddMutationType<Mutation>()
                         .Create()
