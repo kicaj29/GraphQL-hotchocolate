@@ -670,17 +670,17 @@ Request that uses batch data loader as class:
 Request that uses batch data loader as inline implementation:
 ```
 {
-	books {
+  books {
     totalCount
     nodes {
-    id
-    authorId
-    title
-    price
-    authorFromBatch {
-      name
-      surname
-    }
+      id
+      authorId
+      title
+      price
+      authorFromBatch {
+        name
+        surname
+      }
     }
   }
 }
