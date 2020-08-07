@@ -7,6 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using aspnetcore.GraphQL.DataLoaders.ClassDataLoaders;
 using System.Threading;
+using HotChocolate.Resolvers;
+using aspnetcore.GraphQL.DataLoaders.DelegateDataLoaders;
 
 namespace aspnetcore.GraphQL
 {
@@ -38,5 +40,11 @@ namespace aspnetcore.GraphQL
                 int id,
                 AuthorDataLoader dataLoader,
                 CancellationToken cancellationToken) => dataLoader.LoadAsync(id, cancellationToken);
+
+        public Task<Author> GetAuthorByIdBatchAsync(
+            int id,
+            AuthorBatchDataLoader dataLoader,
+            CancellationToken cancellationToken) => dataLoader.LoadAsync(id, cancellationToken);
+
     }
 }

@@ -23,7 +23,7 @@ namespace aspnetcore.GraphQL.DataLoaders.ClassDataLoaders
             {
                 var temp = this._authorService.GetByIds(keys.ToList());
                 return new List<Result<Author>>(temp.Select(item => (Result<Author>.Resolve(item))));
-            });
+            }).ConfigureAwait(false);
         }
     }
 }

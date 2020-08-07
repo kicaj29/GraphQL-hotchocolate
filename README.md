@@ -10,6 +10,9 @@
   - [children nodes (relations)](#children-nodes-relations)
   - [mutations](#mutations)
   - [data loaders](#data-loaders)
+    - [class data loader](#class-data-loader)
+    - [Delegate data loaders](#delegate-data-loaders)
+      - [Batch data loader](#batch-data-loader)
   - [tests](#tests)
     - [book query test](#book-query-test)
     - [book mutation test](#book-mutation-test)
@@ -564,6 +567,13 @@ mutation {
 
 Although we send one request to graphql server usually it will create multiple round-trips to data sources (usually DB). To solve this problem use [data loaders](https://hotchocolate.io/docs/dataloaders). They also solve [N+1 query problem](https://secure.phabricator.com/book/phabcontrib/article/n_plus_one/).
 
+>NOTE: DataLoader contains a **cache** and holds the resolved instances by default for the duration of your request. For example if in the same HTTP request we ask about the same data twice:
+``` a1: authorById(id:1)``` and in another place also ```a1: authorById(id:1)``` the second request will be handled from the cache. **Cache is not supported by resolvers** like [BookResolver](./aspnetcore/aspnetcore/GraphQL/BookResolver.cs).
+
+### class data loader
+
+[Class data loader](./aspnetcore/aspnetcore/GraphQL/DataLoaders/ClassDataLoaders/AuthorDataLoader.cs).
+
 request
 ```
 {
@@ -619,6 +629,58 @@ response
           "price": 11
         }
       ]
+    }
+  }
+}
+```
+
+### Delegate data loaders
+
+#### Batch data loader
+
+Batch data loader can be defined as a [class](./aspnetcore/aspnetcore/GraphQL/DataLoaders/DelegateDataLoaders/AuthorBatchDataLoader.cs) or [inline](./aspnetcore/aspnetcore/GraphQL/BookType.cs).
+
+Request that uses batch data loader as class:
+
+```
+{
+  a1: authorByIdBatch(id:1)
+  {
+    id
+    name
+    surname
+    authorBooks {
+      title
+      price
+    }
+  }
+  a2: authorByIdBatch(id: 2)
+  {
+    id
+    name
+    surname
+    authorBooks {
+      title
+      price
+    }
+  }
+}
+```
+
+Request that uses batch data loader as inline implementation:
+```
+{
+	books {
+    totalCount
+    nodes {
+    id
+    authorId
+    title
+    price
+    authorFromBatch {
+      name
+      surname
+    }
     }
   }
 }
