@@ -13,6 +13,7 @@
     - [class data loader](#class-data-loader)
     - [Delegate data loaders](#delegate-data-loaders)
       - [Batch data loader](#batch-data-loader)
+      - [Group data loader](#group-data-loader)
   - [tests](#tests)
     - [book query test](#book-query-test)
     - [book mutation test](#book-mutation-test)
@@ -682,6 +683,28 @@ Request that uses batch data loader as inline implementation:
         surname
       }
     }
+  }
+}
+```
+
+#### Group data loader
+
+[Inline implementation](./aspnetcore/aspnetcore/GraphQL/QueryType.cs#L23) and [class implementation](./aspnetcore/aspnetcore/GraphQL/DataLoaders/DelegateDataLoaders/AuthorGroupedDataLoader.cs).
+> NOTE: inline implementation requires registration in [Startup.cs](./aspnetcore/aspnetcore/Startup.cs#L31).
+
+```
+{
+  PL: authorByCountry(country: "PL") {
+    id
+    name
+    surname
+    country
+  }
+  USA: authorByCountry(country: "USA") {
+    id
+    name
+    surname
+    country
   }
 }
 ```

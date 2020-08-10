@@ -46,5 +46,10 @@ namespace aspnetcore.GraphQL
             AuthorBatchDataLoader dataLoader,
             CancellationToken cancellationToken) => dataLoader.LoadAsync(id, cancellationToken);
 
+        public Task<Author[]> GetAuthorByCountry(
+            string country,
+            AuthorGroupedDataLoader dataLoader,
+            CancellationToken cancellationToken) => dataLoader.LoadAsync(country, cancellationToken);
+
     }
 }

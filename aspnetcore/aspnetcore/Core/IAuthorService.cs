@@ -10,5 +10,6 @@ namespace aspnetcore.Core
         IQueryable<Author> GetAll();
         Author GetById(int id);
         List<Author> GetByIds(List<int> ids);
+        ILookup<string, Author> GroupByCountry(IReadOnlyList<string> countries);
     }
 }

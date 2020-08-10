@@ -31,6 +31,7 @@ namespace aspnetcore
             services.AddGraphQL(s => SchemaBuilder.New()
                         .AddServices(s)
                         .AddQueryType<Query>()
+                        //.AddQueryType<QueryType>()
                         .AddMutationType<Mutation>()
                         .Create()
                     );

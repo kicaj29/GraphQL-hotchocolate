@@ -14,10 +14,10 @@ namespace aspnetcore.Adapters
         {
             _authors = new List<Author>()
             {
-                new Author() { Id = 1, Name = "Fabio", Surname = "Rossi"},
-                new Author() { Id = 2, Name = "Paolo", Surname = "Verdi"},
-                new Author() { Id = 3, Name = "Carlo", Surname = "Bianchi"},
-                new Author() { Id = 4, Name = "Adam", Surname = "Bonec"}
+                new Author() { Id = 1, Name = "Fabio", Surname = "Rossi", Country = "PL"},
+                new Author() { Id = 2, Name = "Paolo", Surname = "Verdi", Country = "PL"},
+                new Author() { Id = 3, Name = "Carlo", Surname = "Bianchi", Country = "PL"},
+                new Author() { Id = 4, Name = "Adam", Surname = "Bonec", Country = "USA"}
             };
         }
 
@@ -34,6 +34,12 @@ namespace aspnetcore.Adapters
         public List<Author> GetByIds(List<int> ids)
         {
             return _authors.Where(a => ids.Contains(a.Id)).ToList();
+        }
+
+        public ILookup<string, Author> GroupByCountry(IReadOnlyList<string> countries)
+        {
+            var res = _authors.ToLookup(a => a.Country);
+            return res;
         }
     }
 }

@@ -21,8 +21,7 @@ namespace aspnetcore.GraphQL
             descriptor.Field("authorFromBatch").Type<NonNullType<AuthorType>>().Resolver(
                 (IResolverContext ctx) =>
                 {
-                    var aSvc = ctx.Service<IAuthorService>();
-
+                    var aSvc = ctx.Service<IAuthorService>();                    
                     IDataLoader<int, Author> dataLoader = ctx.BatchDataLoader<int, Author>(
                         "AuthorById",
                         async (IReadOnlyList<int> keys) =>

@@ -14,6 +14,7 @@ namespace aspnetcore.GraphQL
             descriptor.Field(a => a.Id).Type<IdType>();
             descriptor.Field(a => a.Name).Type<StringType>();
             descriptor.Field(a => a.Surname).Type<StringType>();
+            descriptor.Field(a => a.Country).Type<StringType>();
             descriptor.Field<BookResolver>(t => t.GetAuthorBooks(default, default));
         }
     }
