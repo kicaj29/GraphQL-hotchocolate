@@ -54,6 +54,20 @@ namespace aspnetcore.GraphQL
 
                 return dataLoader.LoadAsync(ctx.Argument<int>("authorId"));
             });
+
+            descriptor.Field("authorFetchOnce")
+            .Argument("authorId", id => id.Type<NonNullType<IntType>>())
+            .Type<AuthorType>()
+            .Resolver((IResolverContext ctx) =>
+            {
+                var svc = ctx.Service<IAuthorService>();
+                return ctx.FetchOnceAsync("authorId", 
+                    () => {
+                    var id = ctx.Argument<int>("authorId");
+                    return Task.FromResult(svc.GetById(id));
+                    }
+                );
+            });
         }
     }
 }

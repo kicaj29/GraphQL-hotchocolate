@@ -15,6 +15,7 @@
       - [Batch data loader](#batch-data-loader)
       - [Group data loader](#group-data-loader)
       - [Cache data loader](#cache-data-loader)
+      - [Fetch Once](#fetch-once)
   - [tests](#tests)
     - [book query test](#book-query-test)
     - [book mutation test](#book-mutation-test)
@@ -729,6 +730,50 @@ The cache DataLoader is basically the easiest to implement since there is no bat
     name
     surname
     country
+  }
+}
+```
+
+#### Fetch Once
+
+FetchOnceAsync is not really a DataLoader like described by facebook. It rather uses the infrastructure of our DataLoader to provide an easy way to provide cache heavy resource calls that **shall only be done once per request.**
+
+[Inline implementation](./aspnetcore/aspnetcore/GraphQL/QueryType.cs#L58).
+
+Request:
+```
+{
+  a1: authorFetchOnce(authorId: 1) {
+    id
+    name
+    surname
+    country
+  }
+  a2: authorFetchOnce(authorId: 2) {
+    id
+    name
+    surname
+    country
+  }
+}
+```
+
+Response contains the same data twice because it is **Fetch Once** and next it is taken from the cache.
+```js
+{
+  "data": {
+    "a1": {
+      "id": "1",
+      "name": "Fabio",
+      "surname": "Rossi",
+      "country": "PL"
+    },
+    "a2": {
+      "id": "1",
+      "name": "Fabio",
+      "surname": "Rossi",
+      "country": "PL"
+    }
   }
 }
 ```
