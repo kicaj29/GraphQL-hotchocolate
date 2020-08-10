@@ -22,12 +22,14 @@ namespace aspnetcore.GraphQL
 
                IDataLoader<string, Author[]> authodDataLoader = ctx.GroupDataLoader<string, Author>(
                    "authorByCountry",
-                    async (IReadOnlyList<string> keys) =>
+                    (IReadOnlyList<string> keys) =>
                     {
-                        return await Task.Run(() =>
+                        var t = Task.Run(() =>
                         {
                             return svc.GroupByCountry(keys);
                         });
+                        t.ConfigureAwait(continueOnCapturedContext: false);
+                        return t;
                     }
                    );
 
@@ -43,12 +45,14 @@ namespace aspnetcore.GraphQL
 
                 IDataLoader<int, Author> dataLoader = ctx.CacheDataLoader<int, Author>(
                     "authorId",
-                    async (int id) =>
+                    (int id) =>
                     {
-                        return await Task.Run(() =>
+                        var t = Task.Run(() =>
                         {
                             return svc.GetById(id);
                         });
+                        t.ConfigureAwait(continueOnCapturedContext: false);
+                        return t;
                     }
                     );
 

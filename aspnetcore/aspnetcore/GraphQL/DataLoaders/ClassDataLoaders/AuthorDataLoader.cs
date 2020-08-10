@@ -17,13 +17,19 @@ namespace aspnetcore.GraphQL.DataLoaders.ClassDataLoaders
             this._authorService = authorService;
         }
 
-        protected async override Task<IReadOnlyList<Result<Author>>> FetchAsync(IReadOnlyList<int> keys, CancellationToken cancellationToken)
+        protected override Task<IReadOnlyList<Result<Author>>> FetchAsync(IReadOnlyList<int> keys, CancellationToken cancellationToken)
         {
-            return await Task.Run(() =>
+            var t = Task.Run(() =>
             {
                 var temp = this._authorService.GetByIds(keys.ToList());
-                return new List<Result<Author>>(temp.Select(item => (Result<Author>.Resolve(item))));
-            }).ConfigureAwait(false);
+                // return new List<Result<Author>>(temp.Select(item => (Result<Author>.Resolve(item))));
+                IReadOnlyList<Result<Author>> res =  new List<Result<Author>>(temp.Select(item => (Result<Author>.Resolve(item))));
+                return res;
+            });
+
+            t.ConfigureAwait(continueOnCapturedContext: false);
+
+            return t;
         }
     }
 }

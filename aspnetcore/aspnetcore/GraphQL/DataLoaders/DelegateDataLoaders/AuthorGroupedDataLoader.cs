@@ -16,12 +16,16 @@ namespace aspnetcore.GraphQL.DataLoaders.DelegateDataLoaders
             this._authSvc = authSvc;
         }
 
-        protected override async Task<ILookup<string, Author>> LoadGroupedBatchAsync(IReadOnlyList<string> keys, CancellationToken cancellationToken)
+        protected override Task<ILookup<string, Author>> LoadGroupedBatchAsync(IReadOnlyList<string> keys, CancellationToken cancellationToken)
         {
-            return await Task.Run(() =>
+            var t = Task.Run(() =>
             {
                 return this._authSvc.GroupByCountry(keys);
-            }).ConfigureAwait(false);
+            });
+
+            t.ConfigureAwait(continueOnCapturedContext: false);
+
+            return t;
         }
     }
 }

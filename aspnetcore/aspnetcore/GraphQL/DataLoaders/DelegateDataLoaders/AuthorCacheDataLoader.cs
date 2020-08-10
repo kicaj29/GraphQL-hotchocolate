@@ -18,12 +18,15 @@ namespace aspnetcore.GraphQL.DataLoaders.DelegateDataLoaders
             this._svc = svc;
         }
 
-        protected async override Task<Author> LoadSingleAsync(int key, CancellationToken cancellationToken)
+        protected override Task<Author> LoadSingleAsync(int key, CancellationToken cancellationToken)
         {
-            return await Task.Run(() =>
+            var t = Task.Run(() =>
             {
                 return this._svc.GetById(key);
-            }).ConfigureAwait(false);
+            });
+            t.ConfigureAwait(continueOnCapturedContext: false);
+
+            return t;
         }
     }
 }
