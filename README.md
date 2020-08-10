@@ -14,7 +14,7 @@
     - [Delegate data loaders](#delegate-data-loaders)
       - [Batch data loader](#batch-data-loader)
       - [Group data loader](#group-data-loader)
-    - [Cache data loader](#cache-data-loader)
+      - [Cache data loader](#cache-data-loader)
   - [tests](#tests)
     - [book query test](#book-query-test)
     - [book mutation test](#book-mutation-test)
@@ -709,7 +709,7 @@ Request that uses batch data loader as inline implementation:
   }
 }
 ```
-### Cache data loader
+#### Cache data loader
 
 The cache DataLoader is basically the easiest to implement since there is no batching involved.
 
