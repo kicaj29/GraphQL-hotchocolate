@@ -33,6 +33,27 @@ namespace aspnetcore.GraphQL
 
                return authodDataLoader.LoadAsync(ctx.Argument<string>("country"));
            });
+
+            descriptor.Field("authorFromCache")
+            .Argument("authorId", id => id.Type<NonNullType<IntType>>())
+            .Type<AuthorType>()
+            .Resolver((IResolverContext ctx) =>
+            {
+                var svc = ctx.Service<IAuthorService>();
+
+                IDataLoader<int, Author> dataLoader = ctx.CacheDataLoader<int, Author>(
+                    "authorId",
+                    async (int id) =>
+                    {
+                        return await Task.Run(() =>
+                        {
+                            return svc.GetById(id);
+                        });
+                    }
+                    );
+
+                return dataLoader.LoadAsync(ctx.Argument<int>("authorId"));
+            });
         }
     }
 }

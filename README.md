@@ -14,6 +14,7 @@
     - [Delegate data loaders](#delegate-data-loaders)
       - [Batch data loader](#batch-data-loader)
       - [Group data loader](#group-data-loader)
+    - [Cache data loader](#cache-data-loader)
   - [tests](#tests)
     - [book query test](#book-query-test)
     - [book mutation test](#book-mutation-test)
@@ -701,6 +702,29 @@ Request that uses batch data loader as inline implementation:
     country
   }
   USA: authorByCountry(country: "USA") {
+    id
+    name
+    surname
+    country
+  }
+}
+```
+### Cache data loader
+
+The cache DataLoader is basically the easiest to implement since there is no batching involved.
+
+[Inline implementation](./aspnetcore/aspnetcore/GraphQL/QueryType.cs#L44) and [class implementation](./aspnetcore/aspnetcore/GraphQL/DataLoaders/DelegateDataLoaders/AuthorCacheDataLoader.cs).
+> NOTE: inline implementation requires registration in [Startup.cs](./aspnetcore/aspnetcore/Startup.cs#L31).
+
+```
+{
+  a1: authorFromCache(authorId: 1) {
+    id
+    name
+    surname
+    country
+  }
+  a2: authorFromCache(authorId: 2) {
     id
     name
     surname
