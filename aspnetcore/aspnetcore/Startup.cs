@@ -27,7 +27,7 @@ namespace aspnetcore
             services.AddSingleton<IAuthorService, InMemoryAuthorService>();
             services.AddSingleton<IBookService, InMemoryBookService>();
             services.AddErrorFilter<BookNotFoundExceptionFilter>();
-            
+
             services.AddGraphQL(s => SchemaBuilder.New()
                         .AddServices(s)
                         .AddQueryType<Query>()
@@ -36,6 +36,33 @@ namespace aspnetcore
                         .Create()
                     );
 
+            /*services.AddCors(options => {
+                options.AddPolicy("default",
+                builder => {
+                    builder.WithOrigins("*")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });*/
+
+            services.AddCors(options => {
+                options.AddPolicy("default",
+                builder => {
+                    builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin();
+                });
+            });
+
+            /*services.AddCors(options => {
+                options.AddPolicy("default",
+                    builder => {
+                        builder.WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +71,12 @@ namespace aspnetcore
             // if path is specified then playground UI crashes
             // PathString graphQLPath = new PathString("/Foo/Bar");
             // app.UseGraphQL(new QueryMiddlewareOptions { Path = graphQLPath, EnableSubscriptions = false });
+
+            app.UseCors("default");
+
             app.UseGraphQL();
+
+            
 
             if (env.IsDevelopment())
             {
