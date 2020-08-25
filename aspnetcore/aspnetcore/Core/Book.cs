@@ -11,5 +11,7 @@ namespace aspnetcore.Core
         public int AuthorId { get; set; }
         public string Title { get; set; }
         public decimal Price { get; set; }
+
+        public string TimeStamp { get { return DateTime.Now.ToString(); } set { } }
     }
 }
