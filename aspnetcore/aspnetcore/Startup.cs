@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using HotChocolate.Subscriptions;
+using aspnetcore.GraphQL.Subscriptions;
 
 namespace aspnetcore
 {
@@ -28,11 +30,15 @@ namespace aspnetcore
             services.AddSingleton<IBookService, InMemoryBookService>();
             services.AddErrorFilter<BookNotFoundExceptionFilter>();
 
+            // Add in-memory event provider
+            services.AddInMemorySubscriptionProvider();
+
             services.AddGraphQL(s => SchemaBuilder.New()
                         .AddServices(s)
                         .AddQueryType<Query>()
                         //.AddQueryType<QueryType>()
                         .AddMutationType<Mutation>()
+                        .AddSubscriptionType<SubscriptionType>()
                         .Create()
                     );
 
@@ -73,7 +79,7 @@ namespace aspnetcore
             // app.UseGraphQL(new QueryMiddlewareOptions { Path = graphQLPath, EnableSubscriptions = false });
 
             app.UseCors("default");
-
+            app.UseWebSockets();
             app.UseGraphQL();
 
             

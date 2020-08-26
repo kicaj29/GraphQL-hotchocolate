@@ -12,6 +12,7 @@ namespace aspnetcore.Adapters
     public class InMemoryBookService : IBookService
     {
         private IList<Book> _books;
+        private Dictionary<int, List<Review>> _reviews;
 
         public InMemoryBookService()
         {
@@ -22,6 +23,8 @@ namespace aspnetcore.Adapters
                 new Book() { Id = 3, Title = "Third Book", Price = 12, AuthorId = 3},
                 new Book() { Id = 4, Title = "Fourth Book", Price = 15, AuthorId = 1},
             };
+
+            this._reviews = new Dictionary<int, List<Review>>();
         }
 
         public Book Create(CreateBookInput inputBook)
@@ -46,6 +49,19 @@ namespace aspnetcore.Adapters
                 throw new BookNotFoundException() { BookId = inputBook.Id };
             _books.Remove(bookToDelete);
             return bookToDelete;
+        }
+
+        public Review AddReview(int bookId, Review review)
+        {
+            if (this._reviews.ContainsKey(bookId))
+            {
+                this._reviews[bookId].Add(review);
+            } 
+            else
+            {
+                this._reviews.Add(bookId, new List<Review>(new Review[] { review }));
+            }
+            return review;
         }
 
         public IQueryable<Book> GetAll()

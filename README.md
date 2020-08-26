@@ -19,6 +19,7 @@
   - [tests](#tests)
     - [book query test](#book-query-test)
     - [book mutation test](#book-mutation-test)
+  - [subscriptions](#subscriptions)
 - [links](#links)
 
 # GettingStarted (asp.net core)
@@ -799,6 +800,113 @@ mutation($title: String, $price: Decimal!, $authorId: Int!)
 .AddVariableValue("authorId", 4)
 .AddVariableValue("price", 50.0)
 ```
+
+## subscriptions
+Subscriptions are fired by API ```IEventSender.SendAsync```.
+Subscriptions can be split into 2 categories:
+* without parameters
+* with parameters
+
+```cs
+public class Subscription
+{
+    /// <summary>
+    /// Subscription without parameter.
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public Review OnReview(IEventMessage message)
+    {
+        return (Review)message.Payload;
+    }
+
+    /// <summary>
+    /// Subscription with parameter.
+    /// Parameter can be used by the client (subscriber) to subscribe e.g. only for reviews for bookId = 5.
+    /// </summary>
+    /// <param name="bookId"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public Review OnReviewWithBookId(int bookId, IEventMessage message)
+    {
+        return (Review)message.Payload;
+    }
+}
+```
+
+Binding between ```EventMessage``` and particular subscription is defined in ```EventDescription``` constructor, for example:
+
+```cs
+public class OnReviewMessage: EventMessage
+{
+    public OnReviewMessage(Review review)
+        : base(CreateEventDescription(), review)
+    {
+
+    }
+
+    private static EventDescription CreateEventDescription()
+    {
+        return new EventDescription("onReview");
+    }
+}
+```
+
+To trigger subscription use the following sequence of operations
+
+<details>
+<summary>subscribe for onReview (click the play icon in the playground view to start listening)</summary>
+<p>
+
+```js
+subscription onReviewSubscription {
+  onReview {
+    commentary
+    stars
+    bookId
+  }
+}
+```
+</p>
+</details>
+
+<details>
+<summary>subscribe for onReviewWithBookId only for bookId = 5, (click the play icon in the playground view to start listening)</summary>
+<p>
+
+```js
+subscription onReviewWithBookIdSubscription {
+  onReviewWithBookId(bookId: 5) {
+    commentary
+    stars
+    bookId
+  }
+}
+```
+</p>
+</details>
+
+<details>
+<summary>run mutation to create a book and trigger subscriptions</summary>
+<p>
+
+```js
+mutation {
+    createBook(inputBook: {
+        title: "my super book!!!",
+        authorId: 1,
+        price: 12.5
+        })
+    {
+        id
+        title
+    }
+}
+```
+</p>
+</details>
+
+If the created book will have id = 5 both subscriptions will be triggered if not only subscription ```onReview``` will be triggered.
 
 # links
 https://hotchocolate.io/docs/tutorial-mongo   
