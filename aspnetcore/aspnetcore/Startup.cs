@@ -30,13 +30,13 @@ namespace aspnetcore
             services.AddSingleton<IBookService, InMemoryBookService>();
             services.AddErrorFilter<BookNotFoundExceptionFilter>();
 
-            // Add in-memory event provider
+            // Add in-memory event provider (needed for Subscriptions)
             services.AddInMemorySubscriptionProvider();
 
             services.AddGraphQL(s => SchemaBuilder.New()
                         .AddServices(s)
                         .AddQueryType<Query>()
-                        //.AddQueryType<QueryType>()
+                        // .AddQueryType<QueryType>()
                         .AddMutationType<Mutation>()
                         .AddSubscriptionType<SubscriptionType>()
                         .Create()
