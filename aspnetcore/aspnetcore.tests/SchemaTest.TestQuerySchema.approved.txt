@@ -1,0 +1,221 @@
+﻿schema {
+  query: Query
+}
+
+type Author {
+  authorBooks(author: AuthorInput): [Book]
+  country: String
+  id: ID
+  name: String
+  surname: String
+}
+
+"A connection to a list of items."
+type AuthorConnection {
+  "A list of edges."
+  edges: [AuthorEdge!]
+  "A flattened list of the nodes."
+  nodes: [Author]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type AuthorEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Author
+}
+
+type Book {
+  author(book: BookInput): Author
+  authorFromBatch: Author!
+  authorId: Int!
+  id: ID
+  price: Decimal
+  timeStamp: String
+  title: String
+}
+
+"A connection to a list of items."
+type BookConnection {
+  "A list of edges."
+  edges: [BookEdge!]
+  "A flattened list of the nodes."
+  nodes: [Book]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"An edge in a connection."
+type BookEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Book
+}
+
+"Information about pagination in a connection."
+type PageInfo {
+  "When paginating forwards, the cursor to continue."
+  endCursor: String
+  "Indicates whether more edges exist following the set defined by the clients arguments."
+  hasNextPage: Boolean!
+  "Indicates whether more edges exist prior the set defined by the clients arguments."
+  hasPreviousPage: Boolean!
+  "When paginating backwards, the cursor to continue."
+  startCursor: String
+}
+
+type Query {
+  author(id: Int!): Author
+  authorByCountry(country: String): [Author]
+  authorById(id: Int!): Author
+  authorByIdBatch(id: Int!): Author
+  authorFromCache(authorId: Int!): Author
+  authors(after: String before: String first: PaginationAmount last: PaginationAmount where: AuthorFilter): AuthorConnection
+  books(after: String before: String first: PaginationAmount last: PaginationAmount where: BookFilter): BookConnection
+}
+
+input AuthorFilter {
+  AND: [AuthorFilter!]
+  country: String
+  country_contains: String
+  country_ends_with: String
+  country_in: [String]
+  country_not: String
+  country_not_contains: String
+  country_not_ends_with: String
+  country_not_in: [String]
+  country_not_starts_with: String
+  country_starts_with: String
+  id: Int
+  id_gt: Int
+  id_gte: Int
+  id_in: [Int!]
+  id_lt: Int
+  id_lte: Int
+  id_not: Int
+  id_not_gt: Int
+  id_not_gte: Int
+  id_not_in: [Int!]
+  id_not_lt: Int
+  id_not_lte: Int
+  name: String
+  name_contains: String
+  name_ends_with: String
+  name_in: [String]
+  name_not: String
+  name_not_contains: String
+  name_not_ends_with: String
+  name_not_in: [String]
+  name_not_starts_with: String
+  name_starts_with: String
+  OR: [AuthorFilter!]
+  surname: String
+  surname_contains: String
+  surname_ends_with: String
+  surname_in: [String]
+  surname_not: String
+  surname_not_contains: String
+  surname_not_ends_with: String
+  surname_not_in: [String]
+  surname_not_starts_with: String
+  surname_starts_with: String
+}
+
+input AuthorInput {
+  country: String
+  id: Int!
+  name: String
+  surname: String
+}
+
+input BookFilter {
+  AND: [BookFilter!]
+  authorId: Int
+  authorId_gt: Int
+  authorId_gte: Int
+  authorId_in: [Int!]
+  authorId_lt: Int
+  authorId_lte: Int
+  authorId_not: Int
+  authorId_not_gt: Int
+  authorId_not_gte: Int
+  authorId_not_in: [Int!]
+  authorId_not_lt: Int
+  authorId_not_lte: Int
+  id: Int
+  id_gt: Int
+  id_gte: Int
+  id_in: [Int!]
+  id_lt: Int
+  id_lte: Int
+  id_not: Int
+  id_not_gt: Int
+  id_not_gte: Int
+  id_not_in: [Int!]
+  id_not_lt: Int
+  id_not_lte: Int
+  OR: [BookFilter!]
+  price: Decimal
+  price_gt: Decimal
+  price_gte: Decimal
+  price_in: [Decimal!]
+  price_lt: Decimal
+  price_lte: Decimal
+  price_not: Decimal
+  price_not_gt: Decimal
+  price_not_gte: Decimal
+  price_not_in: [Decimal!]
+  price_not_lt: Decimal
+  price_not_lte: Decimal
+  timeStamp: String
+  timeStamp_contains: String
+  timeStamp_ends_with: String
+  timeStamp_in: [String]
+  timeStamp_not: String
+  timeStamp_not_contains: String
+  timeStamp_not_ends_with: String
+  timeStamp_not_in: [String]
+  timeStamp_not_starts_with: String
+  timeStamp_starts_with: String
+  title: String
+  title_contains: String
+  title_ends_with: String
+  title_in: [String]
+  title_not: String
+  title_not_contains: String
+  title_not_ends_with: String
+  title_not_in: [String]
+  title_not_starts_with: String
+  title_starts_with: String
+}
+
+input BookInput {
+  authorId: Int!
+  id: Int!
+  price: Decimal!
+  timeStamp: String
+  title: String
+}
+
+"The `Boolean` scalar type represents `true` or `false`."
+scalar Boolean
+
+"The built-in `Decimal` scalar type."
+scalar Decimal
+
+"The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID."
+scalar ID
+
+"The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1."
+scalar Int
+
+scalar PaginationAmount
+
+"The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text."
+scalar String

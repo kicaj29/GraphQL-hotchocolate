@@ -19,6 +19,7 @@
   - [tests](#tests)
     - [book query test](#book-query-test)
     - [book mutation test](#book-mutation-test)
+    - [schema tests](#schema-tests)
   - [subscriptions](#subscriptions)
 - [links](#links)
 
@@ -800,6 +801,10 @@ mutation($title: String, $price: Decimal!, $authorId: Int!)
 .AddVariableValue("authorId", 4)
 .AddVariableValue("price", 50.0)
 ```
+
+### schema tests
+
+[schema tests](./aspnetcore/aspnetcore.tests/SchemaTest.cs)
 
 ## subscriptions
 Subscriptions are fired by API ```IEventSender.SendAsync```.
