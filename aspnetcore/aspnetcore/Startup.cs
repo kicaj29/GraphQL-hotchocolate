@@ -26,10 +26,25 @@ namespace aspnetcore
 {
     public class Startup
     {
+        private void AddPolicies(IServiceCollection services)
+        {
+            services.AddAuthorization(a =>
+            {
+                a.AddPolicy("super-boss-policy", builder =>
+                    builder
+                        .RequireAuthenticatedUser()
+                        .RequireRole("Managers")
+                        .RequireRole("Senior Managers")
+                        );
+
+            });
+        }
+
         private void ConfigureBasicAuthentication(IServiceCollection services)
         {
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+            this.AddPolicies(services);
         }
 
         private void ConfigureJwtAuthentication(IServiceCollection services)
@@ -58,6 +73,8 @@ namespace aspnetcore
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
             });
+            this.AddPolicies(services);
+
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

@@ -37,6 +37,7 @@ namespace aspnetcore.GraphQL
             return _authorService.GetById(id);
         }
 
+        [Authorize(Policy = "super-boss-policy")]
         public Task<Author> GetAuthorByIdAsync(
                 int id,
                 AuthorDataLoader dataLoader,

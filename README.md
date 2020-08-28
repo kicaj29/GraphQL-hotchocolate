@@ -26,6 +26,7 @@
       - [basic authentication](#basic-authentication)
       - [JWT based authentication](#jwt-based-authentication)
     - [authorization](#authorization)
+      - [Policies](#policies)
 - [links](#links)
 
 # GettingStarted (asp.net core)
@@ -79,6 +80,7 @@ example based on this [article](https://www.blexin.com/en-US/Article/Blog/Creati
 
 To run open: http://localhost:37926/playground/   
 
+NOTE: depends on compiled version authentication is required. More can be found in [authentication and authorization](#authentication-and-authorization) chapter.
 
 ## get authors
 ```
@@ -990,6 +992,33 @@ public class PersonType : ObjectType<Person>
         descriptor.Field(t => t.Address).Authorize(new [] {"foo", "bar"});
     }
 }
+```
+
+#### Policies
+Policies are also supported by hot chocolate authorization.   
+Create policy:
+```c#
+        private void AddPolicies(IServiceCollection services)
+        {
+            services.AddAuthorization(a =>
+            {
+                a.AddPolicy("super-boss-policy", builder =>
+                    builder
+                        .RequireAuthenticatedUser()
+                        .RequireRole("Managers")
+                        .RequireRole("Senior Managers")
+                        );
+
+            });
+        }
+```
+Check policy:
+```c#
+  [Authorize(Policy = "super-boss-policy")]
+  public Task<Author> GetAuthorByIdAsync(
+          int id,
+          AuthorDataLoader dataLoader,
+          CancellationToken cancellationToken) => dataLoader.LoadAsync(id, cancellationToken);
 ```
 # links
 https://hotchocolate.io/docs/tutorial-mongo   
