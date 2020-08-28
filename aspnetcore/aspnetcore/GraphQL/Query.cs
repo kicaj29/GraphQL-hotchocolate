@@ -10,6 +10,9 @@ using System.Threading;
 using HotChocolate.Resolvers;
 using aspnetcore.GraphQL.DataLoaders.DelegateDataLoaders;
 using HotChocolate.AspNetCore.Authorization;
+using static aspnetcore.Authentication.CurrentUser;
+using aspnetcore.Authentication;
+using System.Diagnostics;
 
 namespace aspnetcore.GraphQL
 {
@@ -52,7 +55,18 @@ namespace aspnetcore.GraphQL
         public Task<Author[]> GetAuthorByCountry(
             string country,
             AuthorGroupedDataLoader dataLoader,
-            CancellationToken cancellationToken) => dataLoader.LoadAsync(country, cancellationToken);
+            CancellationToken cancellationToken,
+            [CurrentUserGlobalState] CurrentUser user)
+        {
+            // We could pass user instance to other funcations to execute logic based on the claims
+            foreach(var claim in user.Claims)
+            {
+                Debug.WriteLine($"Type: {claim.Item1}, Value: {claim.Item2}");
+            }
+
+            return dataLoader.LoadAsync(country, cancellationToken);
+        }
+        
 
         public Task<Author> GetAuthorFromCache(
             int authorId,

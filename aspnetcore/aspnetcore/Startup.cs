@@ -21,6 +21,8 @@ using aspnetcore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using HotChocolate.AspNetCore.Interceptors;
+using System.Security.Claims;
 
 namespace aspnetcore
 {
@@ -76,6 +78,26 @@ namespace aspnetcore
             this.AddPolicies(services);
 
         }
+        /// <summary>
+        /// This function is used to create CurrentUser instance that later can be used as paramter in 
+        /// GrapQL endpoints.
+        /// </summary>
+        /// <returns></returns>
+        private static OnCreateRequestAsync AuthenticationInterceptor()
+        {
+            return (context, builder, cancelationToken) =>
+            {
+                if (context.GetUser().Identity.IsAuthenticated)
+                {
+                    builder.SetProperty("currentUser",
+                        new CurrentUser(context.User.FindFirstValue(ClaimTypes.NameIdentifier),
+                            context.User.Claims.Select(x => new Tuple<string, string>(x.Type, x.Value)).ToList()));
+                    
+                }
+
+                return Task.CompletedTask;
+            };
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -83,6 +105,8 @@ namespace aspnetcore
         {
             // this.ConfigureBasicAuthentication(services);
             this.ConfigureJwtAuthentication(services);
+
+            services.AddQueryRequestInterceptor(AuthenticationInterceptor());
 
             services.AddDataLoaderRegistry();
             services.AddSingleton<IAuthorService, InMemoryAuthorService>();

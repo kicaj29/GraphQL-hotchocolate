@@ -27,6 +27,7 @@
       - [JWT based authentication](#jwt-based-authentication)
     - [authorization](#authorization)
       - [Policies](#policies)
+    - [GlobalStateAttribute and HotChocolate interceptor](#globalstateattribute-and-hotchocolate-interceptor)
 - [links](#links)
 
 # GettingStarted (asp.net core)
@@ -1020,6 +1021,51 @@ Check policy:
           AuthorDataLoader dataLoader,
           CancellationToken cancellationToken) => dataLoader.LoadAsync(id, cancellationToken);
 ```
+
+### GlobalStateAttribute and HotChocolate interceptor
+
+Sometimes there is a need to execute some logic depends on user permissions. For example **if else** block. To make it possible we can use ```HotChocolate.GlobalStateAttribute``` that can create an instance of a type that will represent data that we need access to. Next we have to register in DI ```HotChocolate.AspNetCore.Interceptors.OnCreateRequestAsync```.
+
+[CurrentUser](./aspnetcore/aspnetcore/Authentication/CurrentUser.cs)
+
+Interceptor:
+```cs
+private static OnCreateRequestAsync AuthenticationInterceptor()
+{
+    return (context, builder, cancelationToken) =>
+    {
+        if (context.GetUser().Identity.IsAuthenticated)
+        {
+            builder.SetProperty("currentUser",
+                new CurrentUser(context.User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    context.User.Claims.Select(x => new Tuple<string, string>(x.Type, x.Value)).ToList()));
+            
+        }
+
+        return Task.CompletedTask;
+    };
+}
+```
+Finally we can use it in selected GraphQL endpoints:
+```cs
+[Authorize(Roles = new[] { "Managers" })]
+public Task<Author[]> GetAuthorByCountry(
+    string country,
+    AuthorGroupedDataLoader dataLoader,
+    CancellationToken cancellationToken,
+    [CurrentUserGlobalState] CurrentUser user)
+{
+    // We could pass user instance to other functions to execute logic based on the claims
+    foreach(var claim in user.Claims)
+    {
+        Debug.WriteLine($"Type: {claim.Item1}, Value: {claim.Item2}");
+    }
+
+    return dataLoader.LoadAsync(country, cancellationToken);
+}
+```
+
+
 # links
 https://hotchocolate.io/docs/tutorial-mongo   
 https://hotchocolate.io/docs/aspnet
