@@ -27,7 +27,7 @@
       - [JWT based authentication](#jwt-based-authentication)
     - [authorization](#authorization)
       - [Policies](#policies)
-    - [GlobalStateAttribute and HotChocolate interceptor](#globalstateattribute-and-hotchocolate-interceptor)
+      - [GlobalStateAttribute and HotChocolate interceptor](#globalstateattribute-and-hotchocolate-interceptor)
 - [links](#links)
 
 # GettingStarted (asp.net core)
@@ -1022,7 +1022,7 @@ Check policy:
           CancellationToken cancellationToken) => dataLoader.LoadAsync(id, cancellationToken);
 ```
 
-### GlobalStateAttribute and HotChocolate interceptor
+#### GlobalStateAttribute and HotChocolate interceptor
 
 Sometimes there is a need to execute some logic depends on user permissions. For example **if else** block. To make it possible we can use ```HotChocolate.GlobalStateAttribute``` that can create an instance of a type that will represent data that we need access to. Next we have to register in DI ```HotChocolate.AspNetCore.Interceptors.OnCreateRequestAsync```.
 
