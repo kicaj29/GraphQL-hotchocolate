@@ -26,16 +26,15 @@ namespace aspnetcore
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        private void ConfigureBasicAuthentication(IServiceCollection services)
         {
-            // configure basic authentication 
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
-            
-            // authentication bearer token
-            /*services.AddScoped<IIdentityService, IdentityService>();
+        }
+
+        private void ConfigureJwtAuthentication(IServiceCollection services)
+        {
+            services.AddScoped<IIdentityService, IdentityService>();
             services.AddHttpContextAccessor();
             services.AddAuthentication(options =>
             {
@@ -58,8 +57,15 @@ namespace aspnetcore
 
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
-            });*/
+            });
+        }
 
+        // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public void ConfigureServices(IServiceCollection services)
+        {
+            // this.ConfigureBasicAuthentication(services);
+            this.ConfigureJwtAuthentication(services);
 
             services.AddDataLoaderRegistry();
             services.AddSingleton<IAuthorService, InMemoryAuthorService>();

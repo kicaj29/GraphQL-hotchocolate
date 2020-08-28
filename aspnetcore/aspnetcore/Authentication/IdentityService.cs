@@ -15,36 +15,21 @@ namespace aspnetcore.Authentication
         Task<string> Authenticate(string email, string password);
     }
 
+    /// <summary>
+    /// Normally this part is done on dedicated server like https://www.thinktecture.com/en/identityserver/
+    /// </summary>
     public class IdentityService : IIdentityService
     {
         public async Task<string> Authenticate(string email, string password)
         {
             //Your custom logic here (e.g. database query)
             //Mocked for a sake of simplicity
-            var roles = new List<string>();
+            
 
-            if (email.Contains("hr"))
+            if ((email == "abc@dev.com") && (password == "pass123"))
             {
-                roles.Add("hr");
-            }
-
-            if (email.Contains("dev"))
-            {
-                roles.Add("dev");
-            }
-
-            if (email.Contains("leader"))
-            {
-                roles.Add("leader");
-            }
-
-            if (email.Contains("employee"))
-            {
-                roles.Add("employee");
-            }
-
-            if (roles.Count > 0)
-            {
+                var roles = new List<string>();
+                roles.AddRange(new string[] { "Managers", "Senior Managers" });
                 return GenerateAccessToken(email, Guid.NewGuid().ToString(), roles.ToArray());
             }
 

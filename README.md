@@ -25,6 +25,7 @@
     - [authentication](#authentication)
       - [basic authentication](#basic-authentication)
       - [JWT based authentication](#jwt-based-authentication)
+    - [authorization](#authorization)
 - [links](#links)
 
 # GettingStarted (asp.net core)
@@ -923,6 +924,12 @@ If the created book will have id = 5 both subscriptions will be triggered if not
 
 GraphQL does not support authentication process. It is recommended to use [ASP.NET Core authentication](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/?view=aspnetcore-3.1) because it relies on ```AuthenticationTicket``` created during authentication process.
 
+>NOTE: there are implemented 2 authentication mechanism **basic** and **JWT**. To enable one of them call one of these functions in [startup.cs](./aspnetcore/aspnetcore/Startup.cs):
+```
+this.ConfigureBasicAuthentication(services);
+this.ConfigureJwtAuthentication(services);
+```
+
 #### basic authentication 
 
 Example of [basic authentication](./aspnetcore/aspnetcore/Authentication/BasicAuthenticationHandler.cs).
@@ -936,6 +943,54 @@ Formatted and encoded credentials can be generated for example on this [page](ht
 
 Article about [JWT based authentication](https://medium.com/@marcinjaniak/graphql-simple-authorization-and-authentication-with-hotchocolate-11-and-asp-net-core-3-162e0a35743d) in ASP.NET Core 3.
 
+To authenticate call dedicated for this mutation:
+```
+mutation {
+  authenticate(
+    email: "abc@dev.com", password: "pass123"
+  )
+}
+
+```
+Sample result:
+```json
+{
+  "data": {
+    "authenticate": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjgzMWJhMDI0LWUxMWUtNDMxMi04OGE0LWE0ZDIyNWIxNjk3ZCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhYmNAZGV2LmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJNYW5hZ2VyIiwiU2VuaW9yIE1hbmFnZXIiXSwiZXhwIjoxNjA2Mzg5MDMwLCJpc3MiOiJpc3N1ZXIiLCJhdWQiOiJhdWRpZW5jZSJ9.avrZcSHxE0mbDG4ZeBD2l5_ecfOL09gLZpAxsDf6nH0"
+  }
+}
+```
+Use [jwt.io](https://jwt.io/) to decode generated token:
+![token](./images/jwt-decode.png)
+
+Next GraphQL endpoints which require authorization can be accessed using HTTP HEADERS BOX in playground UI:
+![http-headers-box-jwt.png](./images/http-headers-box-jwt.png)
+
+### authorization
+
+Authorization is supported by ```HotChocolate.AspNetCore.Authorization.Authorize``` attribute. It can be also called as a method.
+
+Samples:
+```c#
+[Authorize]
+public class Person
+{
+    public string Name { get; }
+
+    [Authorize(Roles = new[] { "foo", "bar" })]
+    public Address Address { get; }
+}
+```
+```c#
+public class PersonType : ObjectType<Person>
+{
+    protected override Configure(IObjectTypeDescriptor<Person> descriptor)
+    {
+        descriptor.Authorize(new [] {"foo"});
+        descriptor.Field(t => t.Address).Authorize(new [] {"foo", "bar"});
+    }
+}
+```
 # links
 https://hotchocolate.io/docs/tutorial-mongo   
 https://hotchocolate.io/docs/aspnet

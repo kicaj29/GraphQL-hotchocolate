@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.Subscriptions;
 using aspnetcore.GraphQL.Subscriptions;
+using aspnetcore.Authentication;
 
 namespace aspnetcore.GraphQL.Mutations
 {
@@ -44,5 +45,16 @@ namespace aspnetcore.GraphQL.Mutations
         {
             return _bookService.Delete(inputBook);
         }
+
+        /// <summary>
+        /// In normal situation this funcation is part of separte identity server.
+        /// We mutation because generated token is different every time - it mutates.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <param name="identityService"></param>
+        /// <returns></returns>
+        public Task<string> Authenticate(string email, string password, [Service] IIdentityService identityService) =>
+            identityService.Authenticate(email, password);
     }
 }
