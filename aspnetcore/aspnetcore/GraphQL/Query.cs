@@ -9,6 +9,7 @@ using aspnetcore.GraphQL.DataLoaders.ClassDataLoaders;
 using System.Threading;
 using HotChocolate.Resolvers;
 using aspnetcore.GraphQL.DataLoaders.DelegateDataLoaders;
+using HotChocolate.AspNetCore.Authorization;
 
 namespace aspnetcore.GraphQL
 {
@@ -46,6 +47,7 @@ namespace aspnetcore.GraphQL
             AuthorBatchDataLoader dataLoader,
             CancellationToken cancellationToken) => dataLoader.LoadAsync(id, cancellationToken);
 
+        [Authorize(Roles = new[] { "Managers" })]
         public Task<Author[]> GetAuthorByCountry(
             string country,
             AuthorGroupedDataLoader dataLoader,

@@ -21,6 +21,10 @@
     - [book mutation test](#book-mutation-test)
     - [schema tests](#schema-tests)
   - [subscriptions](#subscriptions)
+  - [authentication and authorization](#authentication-and-authorization)
+    - [authentication](#authentication)
+      - [basic authentication](#basic-authentication)
+      - [JWT based authentication](#jwt-based-authentication)
 - [links](#links)
 
 # GettingStarted (asp.net core)
@@ -912,6 +916,25 @@ mutation {
 </details>
 
 If the created book will have id = 5 both subscriptions will be triggered if not only subscription ```onReview``` will be triggered.
+
+## authentication and authorization
+
+### authentication
+
+GraphQL does not support authentication process. It is recommended to use [ASP.NET Core authentication](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/?view=aspnetcore-3.1) because it relies on ```AuthenticationTicket``` created during authentication process.
+
+#### basic authentication 
+
+Example of [basic authentication](./aspnetcore/aspnetcore/Authentication/BasicAuthenticationHandler.cs).
+
+To send credentials from GraphQL playground use HTTP HEADERS box:
+![http-header-box](./images/http-headers-box.png).
+
+Formatted and encoded credentials can be generated for example on this [page](https://www.blitter.se/utils/basic-authentication-header-generator/).
+
+#### JWT based authentication
+
+Article about [JWT based authentication](https://medium.com/@marcinjaniak/graphql-simple-authorization-and-authentication-with-hotchocolate-11-and-asp-net-core-3-162e0a35743d) in ASP.NET Core 3.
 
 # links
 https://hotchocolate.io/docs/tutorial-mongo   

@@ -16,6 +16,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HotChocolate.Subscriptions;
 using aspnetcore.GraphQL.Subscriptions;
+using Microsoft.AspNetCore.Authentication;
+using aspnetcore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace aspnetcore
 {
@@ -25,6 +30,37 @@ namespace aspnetcore
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // configure basic authentication 
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+            
+            // authentication bearer token
+            /*services.AddScoped<IIdentityService, IdentityService>();
+            services.AddHttpContextAccessor();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidAudience = "audience",
+                    ValidIssuer = "issuer",
+                    RequireSignedTokens = false,
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secretsecretsecret"))
+                };
+
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+            });*/
+
+
             services.AddDataLoaderRegistry();
             services.AddSingleton<IAuthorService, InMemoryAuthorService>();
             services.AddSingleton<IBookService, InMemoryBookService>();
@@ -35,6 +71,7 @@ namespace aspnetcore
 
             services.AddGraphQL(s => SchemaBuilder.New()
                         .AddServices(s)
+                        .AddAuthorizeDirectiveType()
                         .AddQueryType<Query>()
                         // .AddQueryType<QueryType>()
                         .AddMutationType<Mutation>()
@@ -69,6 +106,15 @@ namespace aspnetcore
                         .AllowAnyMethod();
                     });
             });*/
+
+            /*services.AddQueryRequestInterceptor(async (context, builder, ct) =>
+            {
+                if (context.User.Identity.IsAuthenticated)
+                {
+                    
+                }
+                
+            });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,18 +126,18 @@ namespace aspnetcore
 
             app.UseCors("default");
             app.UseWebSockets();
-            app.UseGraphQL();
 
-            
+            // !!!--------UseAuthentication must be called before UseGraphQL-----------!!!
+            app.UseAuthentication();
+            app.UseGraphQL();
+           
+
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UsePlayground(graphQLPath);
                 app.UsePlayground();
-            }
-          
-            
+            }                     
 
             /*app.UseRouting();
 
