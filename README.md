@@ -28,6 +28,7 @@
     - [authorization](#authorization)
       - [Policies](#policies)
       - [GlobalStateAttribute and HotChocolate interceptor](#globalstateattribute-and-hotchocolate-interceptor)
+  - [Errors handling](#errors-handling)
 - [links](#links)
 
 # GettingStarted (asp.net core)
@@ -1065,6 +1066,53 @@ public Task<Author[]> GetAuthorByCountry(
 }
 ```
 
+## Errors handling
+
+Handling errors works in this way that we map selected exceptions to instances of ```IErrorFilter``` types.
+
+[EntityDoesNotExistException](./aspnetcore/aspnetcore/GraphQL/ErrorHandling/EntityDoesNotExistException.cs) is mapped to [EntityDoesNotExistFilter](./aspnetcore/aspnetcore/GraphQL/ErrorHandling/EntityDoesNotExistFilter.cs) which is later returned in GraphQL response. Every filter has to be registered in DI:
+```
+services.AddErrorFilter<EntityDoesNotExistFilter>();
+```
+
+Request:
+```
+query DUPLICATE_EXCEPTION {
+  testError(errorType: DUPLICATE_KEY_EXCEPTION)
+}
+```
+Response:
+```
+{
+  "errors": [
+    {
+      "message": "Entity with key already exists.",
+      "locations": [
+        {
+          "line": 2,
+          "column": 3
+        }
+      ],
+      "path": [
+        "testError"
+      ],
+      "extensions": {
+        "message": "Entity with key already exists.",
+        "code": "DUPLICATE_KEY",
+        "ID": 1,
+        "Type": "Book"
+      }
+    }
+  ],
+  "data": {
+    "testError": null
+  }
+}
+```
+
+Hot chocolate has also own list of error codes ```HotChocolate.ErrorCodes```.
+
+If there is exception for which we do not have any dedicated filter then it is handled by built-in error filter from hot chocolate and message 'Unexpected Execution Error' is returned. 
 
 # links
 https://hotchocolate.io/docs/tutorial-mongo   

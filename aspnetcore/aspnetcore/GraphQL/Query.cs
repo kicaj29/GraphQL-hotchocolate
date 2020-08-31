@@ -13,6 +13,8 @@ using HotChocolate.AspNetCore.Authorization;
 using static aspnetcore.Authentication.CurrentUser;
 using aspnetcore.Authentication;
 using System.Diagnostics;
+using HotChocolate;
+using aspnetcore.GraphQL.ErrorHandling;
 
 namespace aspnetcore.GraphQL
 {
@@ -73,6 +75,19 @@ namespace aspnetcore.GraphQL
             AuthorCacheDataLoader dataLoader,
             CancellationToken cancellationToken
             ) => dataLoader.LoadAsync(authorId, cancellationToken);
+
+        public string TestError(ErrorTypes errorType)
+        {          
+            switch (errorType)
+            {
+                case ErrorTypes.DUPLICATE_KEY_EXCEPTION:
+                    throw new DuplicateKeyException(1, typeof(Book), "Entity with key already exists.");
+                case ErrorTypes.ENTITY_DOES_NOT_EXISTS_EXCEPTION:
+                    throw new EntityDoesNotExistException(2, typeof(Book), "Entity does not exists.");
+                default:
+                    throw new Exception($"Cannot find user with email");
+            }
+        }
 
     }
 }

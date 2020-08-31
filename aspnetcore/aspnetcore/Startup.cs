@@ -23,6 +23,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using HotChocolate.AspNetCore.Interceptors;
 using System.Security.Claims;
+using aspnetcore.GraphQL.ErrorHandling;
 
 namespace aspnetcore
 {
@@ -105,6 +106,9 @@ namespace aspnetcore
         {
             // this.ConfigureBasicAuthentication(services);
             this.ConfigureJwtAuthentication(services);
+
+            services.AddErrorFilter<DuplicateKeyFilter>();
+            services.AddErrorFilter<EntityDoesNotExistFilter>();
 
             services.AddQueryRequestInterceptor(AuthenticationInterceptor());
 
