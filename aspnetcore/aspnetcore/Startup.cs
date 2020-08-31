@@ -24,6 +24,7 @@ using System.Text;
 using HotChocolate.AspNetCore.Interceptors;
 using System.Security.Claims;
 using aspnetcore.GraphQL.ErrorHandling;
+using HotChocolate.Execution.Configuration;
 
 namespace aspnetcore
 {
@@ -127,7 +128,11 @@ namespace aspnetcore
                         // .AddQueryType<QueryType>()
                         .AddMutationType<Mutation>()
                         .AddSubscriptionType<SubscriptionType>()
-                        .Create()
+                        .Create(),
+                        new QueryExecutionOptions
+                        {
+                            TracingPreference = TracingPreference.Always
+                        }
                     );
 
             /*services.AddCors(options => {

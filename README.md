@@ -29,6 +29,7 @@
       - [Policies](#policies)
       - [GlobalStateAttribute and HotChocolate interceptor](#globalstateattribute-and-hotchocolate-interceptor)
   - [Errors handling](#errors-handling)
+  - [Tracing](#tracing)
 - [links](#links)
 
 # GettingStarted (asp.net core)
@@ -1113,6 +1114,28 @@ Response:
 Hot chocolate has also own list of error codes ```HotChocolate.ErrorCodes```.
 
 If there is exception for which we do not have any dedicated filter then it is handled by built-in error filter from hot chocolate and message 'Unexpected Execution Error' is returned. 
+
+## Tracing
+
+Hot chocolate have built-in tracing functionality. It can be enabled during graphql creation.
+
+```c#
+services.AddGraphQL(sp => SchemaBuilder.New()
+  .AddQueryType<QueryType>()
+  // Registering schema types and so on here; omitted for brevity
+  .Create()),
+  new QueryExecutionOptions
+  {
+      TracingPreference = TracingPreference.Always
+  });
+```
+
+Next to see it in the playground UI enable tracing in settings (click SAVE SETTINGS).
+![enable-tracing](./images/enable-tracing.png).
+
+Next the tracing data will be sent in the response and can be viewed in the playground UI.
+![extensions-tracing](./images/extensions-tracing.png).
+
 
 # links
 https://hotchocolate.io/docs/tutorial-mongo   
